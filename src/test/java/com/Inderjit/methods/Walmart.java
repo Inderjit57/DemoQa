@@ -74,7 +74,7 @@ public class Walmart {
 
 	@AfterMethod
 	public void tearDown() {
-//		wd.quit();
+		wd.quit();
 	}
 
 }
