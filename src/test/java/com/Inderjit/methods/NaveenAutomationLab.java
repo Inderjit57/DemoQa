@@ -34,7 +34,6 @@ public class NaveenAutomationLab {
 		wd = new ChromeDriver();
 
 		wd.get("https://naveenautomationlabs.com/opencart/index.php?route=common/home");
-//		wd.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		wait = new WebDriverWait(wd, 10);
 
 		wd.manage().window().maximize();
@@ -215,7 +214,8 @@ public class NaveenAutomationLab {
 			count++;
 		}
 		System.out.println(count);
-
+		
+		sf.assertAll();
 	}
 	
 	@AfterMethod
