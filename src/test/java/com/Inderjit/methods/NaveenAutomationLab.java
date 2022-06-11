@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -25,17 +26,19 @@ public class NaveenAutomationLab {
 	WebDriverWait wait;
 	SoftAssert sf = new SoftAssert();
 	Actions actions;
-
+	PageFactory factory;
+	
 	@BeforeMethod
 	public void setupDriver() {
-
+		
+		factory.initElements(wd, this);
 		WebDriverManager.chromedriver().setup();
 
 		wd = new ChromeDriver();
-
+		
 		wd.get("https://naveenautomationlabs.com/opencart/index.php?route=common/home");
-		wait = new WebDriverWait(wd, 10);
-
+		wait = new WebDriverWait(wd, 20);
+		
 		wd.manage().window().maximize();
 	}
 
@@ -160,11 +163,12 @@ public class NaveenAutomationLab {
 		selectCountry.selectByValue("38");
 
 		// select province
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#input-payment-zone")));
-		WebElement provinceList = wd.findElement(By.cssSelector("#input-payment-zone"));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("select[name='zone_id']")));
+		WebElement provinceList = wd.findElement(By.cssSelector("select[name='zone_id']"));
 		Select selectProvince = new Select(provinceList);
-		selectProvince.selectByIndex(10);
-
+		selectProvince.selectByValue("602");
+		
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[id='button-guest']")));
 		WebElement continueBtnOnCheckout = wd.findElement(By.cssSelector("input[id='button-guest']"));
 		continueBtnOnCheckout.click();
 		
@@ -213,14 +217,12 @@ public class NaveenAutomationLab {
 		for (WebElement elements : searchCriteria) {
 			count++;
 		}
-		System.out.println(count);
-		
-		sf.assertAll();
+		System.out.println("Number of items as per search criteria: "+count);
 	}
 	
 	@AfterMethod
 	public void tearDown() {
-		wd.quit();
+//		wd.quit();
 	}
 
 }
