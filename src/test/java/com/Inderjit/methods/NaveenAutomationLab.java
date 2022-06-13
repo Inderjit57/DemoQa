@@ -7,13 +7,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
+
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -25,20 +23,16 @@ public class NaveenAutomationLab {
 	WebDriver wd;
 	WebDriverWait wait;
 	SoftAssert sf = new SoftAssert();
-	Actions actions;
-	PageFactory factory;
-	
+
 	@BeforeMethod
 	public void setupDriver() {
-		
-		factory.initElements(wd, this);
 		WebDriverManager.chromedriver().setup();
 
 		wd = new ChromeDriver();
-		
+
 		wd.get("https://naveenautomationlabs.com/opencart/index.php?route=common/home");
-		wait = new WebDriverWait(wd, 20);
-		
+		wait = new WebDriverWait(wd, 10);
+
 		wd.manage().window().maximize();
 	}
 
@@ -46,15 +40,17 @@ public class NaveenAutomationLab {
 	public void purchaseItem() {
 
 		// Click on laptop and notebook Tab on homepage
-		wait.until(ExpectedConditions
-				.visibilityOfAllElementsLocatedBy(By.xpath("/html/body/div[1]/nav/div[2]/ul/li[2]/a")));
-		WebElement moveToLaptopBtn = wd.findElement(By.xpath("/html/body/div[1]/nav/div[2]/ul/li[2]/a"));
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+				By.xpath("/html/body/div[1]/nav/div[2]/ul/li[2]/a")));
+		WebElement moveToLaptopBtn = wd
+				.findElement(By.xpath("/html/body/div[1]/nav/div[2]/ul/li[2]/a"));
 		moveToLaptopBtn.click();
 
 		// Click on Show all laptops
-		wait.until(ExpectedConditions
-				.visibilityOfAllElementsLocatedBy(By.xpath("/html/body/div[1]/nav/div[2]/ul/li[2]/div/a")));
-		WebElement clickShowAllLaptop = wd.findElement(By.xpath("/html/body/div[1]/nav/div[2]/ul/li[2]/div/a"));
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+				By.cssSelector("#menu div:nth-of-type(2) ul li:nth-of-type(2) div>a")));
+		WebElement clickShowAllLaptop = wd
+				.findElement(By.cssSelector("#menu div:nth-of-type(2) ul li:nth-of-type(2) div>a"));
 		clickShowAllLaptop.click();
 
 		// Go to SortBy dropdown -Model (A-Z)
@@ -72,30 +68,33 @@ public class NaveenAutomationLab {
 				By.cssSelector("#product-category div div[class='col-sm-9'] div:nth-of-type(5) div div a img"));
 		clickHP3065.click();
 
-		wait.until(
-				ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//div[@id='content']/div[1]/div[2]/h1")));
-
 		// Asserting Laptop model Text and stock availablity
-		WebElement laptopModel = wd.findElement(By.xpath("//div[@id='content']/div[1]/div[2]/h1"));
+		wait.until(ExpectedConditions
+				.visibilityOfAllElementsLocatedBy(By.cssSelector("#product-product div div div div>h1")));
+		WebElement laptopModel = wd.findElement(By.cssSelector("#product-product div div div div>h1"));
 		String getTextOfLaptopModel = laptopModel.getText();
 		System.out.println("Laptop model " + getTextOfLaptopModel);
 		sf.assertEquals(getTextOfLaptopModel, "HP LP3065");
 
-		WebElement availableInStock = wd.findElement(By.xpath("//div[@id='content']/div[1]/div[2]/ul/li[4]"));
+		WebElement availableInStock = wd
+				.findElement(By.cssSelector("#content div div:nth-of-type(2) ul li:nth-of-type(4)"));
 		String getTextOfAvailability = availableInStock.getText();
 		System.out.println("Availability: " + getTextOfAvailability);
 		sf.assertEquals(getTextOfAvailability, "Availability: In Stock");
 
 		// Asserting the laptop price
-		WebElement laptopPrice = wd.findElement(By.xpath("//div[@id='content']/div[1]/div[2]/ul[2]/ li/h2"));
+		WebElement laptopPrice = wd
+				.findElement(By.cssSelector("#content div div:nth-of-type(2) ul:nth-of-type(2) li h2"));
 		String getLaptopPrice = laptopPrice.getText();
 		sf.assertEquals(getLaptopPrice, "$122.00");
 
 		// Add to cart and asserting the text
 		WebElement clickAddToCart = wd.findElement(By.cssSelector(".form-group button[id='button-cart']"));
 		clickAddToCart.click();
-
-		WebElement sucessMessage = wd.findElement(By.xpath("//*[@id=\"product-product\"]/div[1]"));
+		
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("#product-product > div.alert.alert-success.alert-dismissible")));
+		WebElement sucessMessage = wd
+				.findElement(By.cssSelector("#product-product > div.alert.alert-success.alert-dismissible"));
 		String getSucessMessage = sucessMessage.getText();
 		sf.assertEquals(getSucessMessage, "Success: You have added ");
 
@@ -103,11 +102,11 @@ public class NaveenAutomationLab {
 		WebElement shoppingCartBtn = wd.findElement(By.cssSelector("a[title='Shopping Cart']"));
 		shoppingCartBtn.click();
 
-		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By
-				.xpath("//div[@class='col-sm-12'] // div[@class='col-sm-4 col-sm-offset-8']/table/tbody/tr[4]/td[2]")));
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+				By.cssSelector(".col-sm-4.col-sm-offset-8 table tbody tr:nth-of-type(4) td:nth-of-type(2)")));
 		// Asserting price in the shopping cart
-		WebElement totalPrice = wd.findElement(By
-				.xpath("//div[@class='col-sm-12'] // div[@class='col-sm-4 col-sm-offset-8']/table/tbody/tr[4]/td[2]"));
+		WebElement totalPrice = wd.findElement(
+				By.cssSelector(".col-sm-4.col-sm-offset-8 table tbody tr:nth-of-type(4) td:nth-of-type(2)"));
 		String getTotalPrice = totalPrice.getText();
 		System.out.println("Total Price of purchase: " + getTotalPrice);
 		sf.assertEquals(getTotalPrice, "$122.00");
@@ -142,7 +141,7 @@ public class NaveenAutomationLab {
 		inputLastName.sendKeys("Singh");
 
 		WebElement inputEmail = wd.findElement(By.cssSelector("#input-payment-email"));
-		inputEmail.sendKeys("singhinderjit012021@gmail.com");
+		inputEmail.sendKeys("singhinderjit012022@gmail.com");
 
 		WebElement inputPhoneNo = wd.findElement(By.cssSelector("#input-payment-telephone"));
 		inputPhoneNo.sendKeys("1234567890");
@@ -163,26 +162,26 @@ public class NaveenAutomationLab {
 		selectCountry.selectByValue("38");
 
 		// select province
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("select[name='zone_id']")));
-		WebElement provinceList = wd.findElement(By.cssSelector("select[name='zone_id']"));
+//		wait.until(ExpectedConditions.elementToBeSelected(By.cssSelector("#input-payment-zone")));
+		WebElement provinceList = wd.findElement(By.cssSelector("#input-payment-zone"));
 		Select selectProvince = new Select(provinceList);
-		selectProvince.selectByValue("602");
-		
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[id='button-guest']")));
+		selectProvince.selectByValue("10");
+
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[id='button-guest']")));
 		WebElement continueBtnOnCheckout = wd.findElement(By.cssSelector("input[id='button-guest']"));
 		continueBtnOnCheckout.click();
-		
+
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[id='button-shipping-method']")));
 		WebElement continueBtnOnDeliveryMethod = wd.findElement(By.cssSelector("input[id='button-shipping-method']"));
 		continueBtnOnDeliveryMethod.click();
-		
+
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[name='agree']")));
 		WebElement agreeBtn = wd.findElement(By.cssSelector("input[name='agree']"));
 		agreeBtn.click();
 
 		WebElement continuePaymentMethod = wd.findElement(By.cssSelector("input[id='button-payment-method']"));
 		continuePaymentMethod.click();
-		
+
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[id='button-confirm']")));
 		WebElement confirmBtn = wd.findElement(By.cssSelector("input[id='button-confirm']"));
 		confirmBtn.click();
@@ -192,37 +191,17 @@ public class NaveenAutomationLab {
 		WebElement confirmationMessage = wd.findElement(By.cssSelector("#content h1"));
 		String getConfirmationText = confirmationMessage.getText();
 		sf.assertEquals(getConfirmationText, "Your order has been placed!");
-		
+
 		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("a[class='btn btn-primary']")));
 		WebElement continueBtnOnConfirmation = wd.findElement(By.cssSelector("a[class='btn btn-primary']"));
 		continueBtnOnConfirmation.click();
 
-		// Search for content in search bar
-		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("#search input")));
-		WebElement searchInput = wd.findElement(By.cssSelector("#search input"));
-		searchInput.sendKeys("camera");
-		WebElement searchBtn = wd.findElement(By.cssSelector("#search span button"));
-		searchBtn.click();
-
-		// click checkbox search in product description
-		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("#description")));
-		WebElement descriptionCheckbox = wd.findElement(By.cssSelector("#description"));
-		descriptionCheckbox.click();
-
-		WebElement searchBtn2 = wd.findElement(By.cssSelector("input[id='button-search']"));
-		searchBtn2.click();
-
-		int count = 0;
-		List<WebElement> searchCriteria = wd.findElements(By.xpath("//*[@id='content']/div[3]/div"));
-		for (WebElement elements : searchCriteria) {
-			count++;
-		}
-		System.out.println("Number of items as per search criteria: "+count);
+		sf.assertAll();
 	}
-	
+
 	@AfterMethod
 	public void tearDown() {
-//		wd.quit();
+		wd.quit();
 	}
 
 }
