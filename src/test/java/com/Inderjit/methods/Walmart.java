@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -27,11 +28,13 @@ public class Walmart {
 	public void setupDriver() {
 
 		WebDriverManager.chromedriver().setup();
+		ChromeOptions cp = new ChromeOptions();
+		cp.addArguments("--incognito");
 
-		wd = new ChromeDriver();
+		wd = new ChromeDriver(cp);
 
 		wd.get("https://www.walmart.ca/en");
-		wait = new WebDriverWait(wd, 50);
+		wait = new WebDriverWait(wd, 10);
 
 		wd.manage().window().maximize();
 	}
@@ -62,7 +65,7 @@ public class Walmart {
 		String facebookHandleTitle = wd.getTitle();
 		System.out.println("Homepage Title: " + facebookHandleTitle);
 		wd.close();
-		wd.switchTo().defaultContent();
+		wd.switchTo().window(parentHandle);
 
 		try {
 			Thread.sleep(10);
