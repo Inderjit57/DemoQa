@@ -40,10 +40,9 @@ public class NaveenAutomationLab {
 	public void purchaseItem() {
 
 		// Click on laptop and notebook Tab on homepage
-		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-				By.xpath("/html/body/div[1]/nav/div[2]/ul/li[2]/a")));
-		WebElement moveToLaptopBtn = wd
-				.findElement(By.xpath("/html/body/div[1]/nav/div[2]/ul/li[2]/a"));
+		wait.until(ExpectedConditions
+				.visibilityOfAllElementsLocatedBy(By.xpath("/html/body/div[1]/nav/div[2]/ul/li[2]/a")));
+		WebElement moveToLaptopBtn = wd.findElement(By.xpath("/html/body/div[1]/nav/div[2]/ul/li[2]/a"));
 		moveToLaptopBtn.click();
 
 		// Click on Show all laptops
@@ -91,12 +90,13 @@ public class NaveenAutomationLab {
 		// Add to cart and asserting the text
 		WebElement clickAddToCart = wd.findElement(By.cssSelector(".form-group button[id='button-cart']"));
 		clickAddToCart.click();
-		
-		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("#product-product > div.alert.alert-success.alert-dismissible")));
+
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+				By.cssSelector("#product-product > div.alert.alert-success.alert-dismissible")));
 		WebElement sucessMessage = wd
 				.findElement(By.cssSelector("#product-product > div.alert.alert-success.alert-dismissible"));
 		String getSucessMessage = sucessMessage.getText();
-		sf.assertEquals(getSucessMessage, "Success: You have added ");
+		sf.assertEquals(getSucessMessage, "Success: You have added HP LP3065 to your shopping cart!");
 
 		// Click on shopping cart
 		WebElement shoppingCartBtn = wd.findElement(By.cssSelector("a[title='Shopping Cart']"));
@@ -123,56 +123,37 @@ public class NaveenAutomationLab {
 				.findElement(By.cssSelector("div[class='buttons clearfix'] div[class='pull-right'] a"));
 		checkoutbtn.click();
 
-		// Click in radio buttone - guest and click continue
+		// INPUT CREDENTIALS AND LOGIN
 		wait.until(ExpectedConditions
-				.visibilityOfAllElementsLocatedBy(By.cssSelector("div[class='radio'] label input[value='guest']")));
-		WebElement guestRadiobtn = wd.findElement(By.cssSelector("div[class='radio'] label input[value='guest']"));
-		guestRadiobtn.click();
+				.visibilityOfAllElementsLocatedBy(By.cssSelector(".col-sm-6 div input[id='input-email']")));
+		WebElement inputEmail = wd.findElement(By.cssSelector(".col-sm-6 div input[id='input-email']"));
+		inputEmail.sendKeys("singhinderjit012021@gmail.com");
 
-		WebElement continueBtn = wd.findElement(By.xpath("//input[@id='button-account']"));
-		continueBtn.click();
+		WebElement inputPassword = wd.findElement(By.cssSelector(".col-sm-6 div input[id='input-password']"));
+		inputPassword.sendKeys("inderjit1234");
 
-		// Filling form on checkout page
-		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("#input-payment-firstname")));
-		WebElement inputFirstName = wd.findElement(By.cssSelector("#input-payment-firstname"));
-		inputFirstName.sendKeys("Inderjit");
+		WebElement loginBtn = wd.findElement(By.cssSelector(".col-sm-6 input[id='button-login']"));
+		loginBtn.click();
 
-		WebElement inputLastName = wd.findElement(By.cssSelector("#input-payment-lastname"));
-		inputLastName.sendKeys("Singh");
+		wait.until(ExpectedConditions
+				.elementToBeClickable(By.cssSelector(".pull-right input[id='button-payment-address']")));
+		WebElement continueBtnOnDelivery = wd
+				.findElement(By.cssSelector(".pull-right input[id='button-payment-address']"));
 
-		WebElement inputEmail = wd.findElement(By.cssSelector("#input-payment-email"));
-		inputEmail.sendKeys("singhinderjit012022@gmail.com");
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[id='button-payment-address']")));
+		WebElement continueBtnOnBilling = wd.findElement(By.cssSelector("input[id='button-payment-address']"));
+		continueBtnOnBilling.click();
 
-		WebElement inputPhoneNo = wd.findElement(By.cssSelector("#input-payment-telephone"));
-		inputPhoneNo.sendKeys("1234567890");
+		wait.until(ExpectedConditions.elementToBeClickable(
+				By.cssSelector("#collapse-shipping-address div form div>input[id='button-shipping-address']")));
+		WebElement continueBtnOnDeliveryDetails = wd.findElement(
+				By.cssSelector("#collapse-shipping-address div form div>input[id='button-shipping-address']"));
+		continueBtnOnDeliveryDetails.click();
 
-		WebElement inputAddress1 = wd.findElement(By.cssSelector("#input-payment-address-1"));
-		inputAddress1.sendKeys("123 Random drive");
-
-		WebElement inputCity = wd.findElement(By.cssSelector("#input-payment-city"));
-		inputCity.sendKeys("Btown");
-
-		WebElement inputPostCode = wd.findElement(By.cssSelector("#input-payment-postcode"));
-		inputPostCode.sendKeys("435667");
-
-		// select country
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#input-payment-country")));
-		WebElement countryList = wd.findElement(By.cssSelector("#input-payment-country"));
-		Select selectCountry = new Select(countryList);
-		selectCountry.selectByValue("38");
-
-		// select province
-//		wait.until(ExpectedConditions.elementToBeSelected(By.cssSelector("#input-payment-zone")));
-		WebElement provinceList = wd.findElement(By.cssSelector("#input-payment-zone"));
-		Select selectProvince = new Select(provinceList);
-		selectProvince.selectByValue("10");
-
-		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[id='button-guest']")));
-		WebElement continueBtnOnCheckout = wd.findElement(By.cssSelector("input[id='button-guest']"));
-		continueBtnOnCheckout.click();
-
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[id='button-shipping-method']")));
-		WebElement continueBtnOnDeliveryMethod = wd.findElement(By.cssSelector("input[id='button-shipping-method']"));
+		wait.until(ExpectedConditions
+				.elementToBeClickable(By.cssSelector(".panel-collapse.collapse.in div div[class='pull-right'] input")));
+		WebElement continueBtnOnDeliveryMethod = wd
+				.findElement(By.cssSelector(".panel-collapse.collapse.in div div[class='pull-right'] input"));
 		continueBtnOnDeliveryMethod.click();
 
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[name='agree']")));
@@ -187,8 +168,10 @@ public class NaveenAutomationLab {
 		confirmBtn.click();
 
 		// Confirm Message
-		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("#content h1")));
-		WebElement confirmationMessage = wd.findElement(By.cssSelector("#content h1"));
+		wait.until(ExpectedConditions
+				.visibilityOfAllElementsLocatedBy(By.cssSelector("#common-success div div[class='col-sm-12'] h1")));
+		WebElement confirmationMessage = wd
+				.findElement(By.cssSelector("#common-success div div[class='col-sm-12'] h1"));
 		String getConfirmationText = confirmationMessage.getText();
 		sf.assertEquals(getConfirmationText, "Your order has been placed!");
 
